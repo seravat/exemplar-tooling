@@ -1,0 +1,25 @@
+---
+# Source: chart/templates/buildconfig-pipeline.yaml
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: "buildconfig-test-pipeline-build"
+    name: "buildconfig-test-pipeline-build"
+    type: pipeline
+  name: "buildconfig-test-pipeline-build"
+spec:
+  runPolicy: Serial
+  source:
+    git:
+      ref: "master"
+      uri: "https://github.com/seravat/e2e-pipeline-sample"
+    type: Git
+    sourceSecret:
+      name: "james-github-secret"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+    type: JenkinsPipeline
+  triggers:
+  - type: ConfigChange

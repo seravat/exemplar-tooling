@@ -11,7 +11,17 @@ It will have:
 
 - (...)
 
-### How to run ###
+### How to run on OCP 3.x ###
+
+- Create the new unique namespace/project in openshift, this should reflect the programme owning the instance
+
+- Under ./build/values/ create a new values file for the buildconfig-pipeline
+
+- Run helm template buildconfig -f build/values/values-buildconfig-pipeline.yaml helm-charts/buildconfig-pipeline | oc apply -n labs-ci-cd -f -
+
+helm template --name-template <NAMESPACE> --output-dir <OUTPUT DIR NAME> ./mo-argo
+
+### How to run on OCP 4.x ###
 
 To login with argocd from CLI using sso:
 

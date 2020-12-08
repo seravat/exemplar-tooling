@@ -1,0 +1,3 @@
+resources:
+- buildconfig-pipeline.yaml
+- imagestream.yaml

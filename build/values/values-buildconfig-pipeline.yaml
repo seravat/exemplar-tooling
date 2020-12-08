@@ -1,8 +1,7 @@
 # Default values for chart.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-appName: app
+appName: buildconfig-test
 
 git:
   branch: "master"
