@@ -1,0 +1,49 @@
+destination: &ci_cd_ns app-ci-cd
+
+##############
+# 🐙 Argo Sync Policy
+#############
+sync_policy_true: &sync_policy_true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - Validate=true
+
+sync_policy_no_selfheal: &sync_policy_no_selfheal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+    - Validate=true
+
+##############
+# 🛎 Argo App of Apps declaration
+#############
+# enabled true on an app is to tell helm to create an argo app cr for this item
+# Custom values override the default values in Helm Charts
+applications:
+
+  # BuildConfig-pipeline
+  - name: jenkins
+    enabled: true
+    source: https://bitbucket.org/motabilityoperations/exemplar-tooling.git
+    source_path: helm-charts/buildconfig-pipeline
+    source_ref: "master"
+    sync_policy: *sync_policy_true
+    destination: *ci_cd_ns
+    values:
+      appName: app
+      git:
+        branch: "master"
+        uri: "https://github.com/seravat/e2e-pipeline-sample"
+        secretName: "james-github-secret"
+    ignore_differences:
+      - group: build.openshift.io
+        kind: BuildConfig
+        jsonPointers:
+          - /spec/triggers
+
+  # Jenkins

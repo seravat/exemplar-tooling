@@ -1,0 +1,23 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: "{{ .Values.appName }}-pipeline-build"
+    name: "{{ .Values.appName }}-pipeline-build"
+    type: pipeline
+  name: "{{ .Values.appName }}-pipeline-build"
+spec:
+  runPolicy: Serial
+  source:
+    git:
+      ref: "{{ .Values.git.branch }}"
+      uri: "{{ .Values.git.uri }}"
+    type: Git
+    sourceSecret:
+      name: "{{ .Values.git.secretName }}"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+    type: JenkinsPipeline
+  triggers:
+  - type: ConfigChange
